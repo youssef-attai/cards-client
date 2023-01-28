@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create game</title>
+    <style>
+        .form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            }
+           .createGame{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+           } 
+           .items{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+           }
+           .pack{
+            overflow-x: scroll;
+           }
+        
+    </style>
+</head>
+<body>
+    <div class="form">
+        <h3>Create Game</h3>
+        <div class="CreateGame">
+            <div class="items">
+        <label for="Mode" >Modes</label>
+        <select name="MODE" size="NumberOfModes" id="Mode">
+            <option> List item 1 </option>  
+            <option> List item 2 </option>  
+            <option> List item 3 </option>  
+            <option> List item N </option>  
+        </select>
+    </div>
+        <div class="items">
+        <label for="rounds" >Rounds</label>
+        <input type="number" id="rounds" name="numberOfRounds"
+       min="1" max="100" >
+    </div>
+    <div class="items">
+       <label for="noPlayer" >Max. Players</label>
+       <input type="number" id="noPlayer" name="numberOfPlayers"
+       min="3" max="100" >
+    </div>
+    <div class="items"> 
+       <label for="RoundTime" >RoundTime</label>
+        <input type="number" id="RoundTime" name="RoundTime"
+       min="1" max="100" >
+    </div>
+    <div class="items">
+       <label for="vehicle1" >All packs</label>
+       <input type="checkbox" id="All" name="AllPacks" class="createGame">
+    </div>
+    </div>
+    <div class="pack">
+        <div></div>
+        <div></div>
+    </Div>
+    </div>
+</body>
+</html>

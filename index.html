@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="Home.css">
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+
+<body>
+    <div id="Primarydiv">
+        <div>
+            <P>HOME PAGE</P>
+            <div id="Usernamediv">
+                <input type="text" id="Username" placeholder="Enter Username">
+                <br>
+                <button id="create-game">Create Game</button>
+                <br>
+            </div>
+        </div>
+        <div>
+            <div id="RoomCodediv">
+                <input type="text" id="RoomCode" placeholder="Enter RoomCode">
+                <br>
+                <button id="join-game">Join Game</button>
+                <br>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createGameButton = document.querySelector("button#create-game");
+        const joinGameButton = document.querySelector("button#join-game");
+
+        const usernameField = document.querySelector("input#Username");
+
+        createGameButton.onclick = function (e) {
+            localStorage.setItem("username", usernameField.value);
+            window.location.href = "game/create.html"
+        }
+    </script>
+</body>
+
+</html>

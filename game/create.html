@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create game</title>
+    <style>
+        .form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .createGame {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .items {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #packs {
+            height: 100px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .pack {
+            height: 100%;
+            flex-grow: 1;
+            overflow-x: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form">
+        <h3>Create Game</h3>
+        <div class="CreateGame">
+            <div class="items">
+                <label for="Mode">Modes</label>
+                <select name="MODE" size="NumberOfModes" id="Mode">
+                    <option>normal</option>
+                    <option>reverse</option>
+                </select>
+            </div>
+            <div class="items">
+                <label for="rounds">Rounds</label>
+                <input type="number" id="rounds" name="numberOfRounds" min="1" max="100">
+            </div>
+            <div class="items">
+                <label for="noPlayer">Max. Players</label>
+                <input type="number" id="noPlayer" name="numberOfPlayers" min="3" max="100">
+            </div>
+            <div class="items">
+                <label for="RoundTime">RoundTime</label>
+                <input type="number" id="RoundTime" name="RoundTime" min="1" max="100">
+            </div>
+            <div class="items">
+                <label for="vehicle1">All packs</label>
+                <input type="checkbox" id="All" name="AllPacks" class="createGame">
+            </div>
+        </div>
+        <div id="packs">
+            <div class="pack" id="question-pack"></div>
+            <div class="pack" id="answer-pack"></div>
+        </div>
+        <button id="join">Create and join</button>
+    </div>
+    <script>
+        const modeInput = document.querySelector("select#Mode");
+        const roundsInput = document.querySelector("input#rounds");
+        const numPlayersInput = document.querySelector("input#noPlayer");
+        const roundTimeInput = document.querySelector("input#RoundTime");
+        const allInput = document.querySelector("input#All");
+
+        const questionPacksDiv = document.querySelector("div.pack#question-pack");
+        const answerPacksDiv = document.querySelector("div.pack#answer-pack");
+
+        const joinButton = document.querySelector("button#join");
+
+        const selectedQuestionPacks = [];
+        const selectedAnswerPacks = [];
+
+        async function getQuestionPacks() {
+            const res = await fetch("https://7ixjrz.deta.dev/questionpack/");
+            const packs = await res.json();
+
+            for (const pack of packs) {
+                const packButton = document.createElement('button');
+                packButton.dataset.packId = pack.key;
+                packButton.textContent = pack.title;
+                packButton.onclick = (e) => {
+                    if (selectedQuestionPacks.includes(packButton.dataset.packId)) {
+                        selectedQuestionPacks.splice(
+                            selectedQuestionPacks.indexOf(packButton.dataset.packId), 1);
+                    } else {
+                        selectedQuestionPacks.push(packButton.dataset.packId);
+                    }
+                }
+                questionPacksDiv.append(packButton);
+            }
+        }
+
+        async function getAnswerPacks() {
+            const res = await fetch("https://7ixjrz.deta.dev/answerpack/");
+            const packs = await res.json();
+
+            for (const pack of packs) {
+                const packButton = document.createElement('button');
+                packButton.dataset.packId = pack.key;
+                packButton.textContent = pack.title;
+                packButton.onclick = (e) => {
+                    if (selectedAnswerPacks.includes(packButton.dataset.packId)) {
+                        selectedAnswerPacks.splice(
+                            selectedAnswerPacks.indexOf(packButton.dataset.packId), 1);
+                    } else {
+                        selectedAnswerPacks.push(packButton.dataset.packId);
+                    }
+                }
+                answerPacksDiv.append(packButton);
+            }
+        }
+
+        joinButton.onclick = async () => {
+            const res = await fetch("https://7ixjrz.deta.dev/game/", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    mode: modeInput.value,
+                    rounds: roundsInput.value,
+                    max_players: numPlayersInput.value,
+                    round_time: roundTimeInput.value,
+                    all_packs: allInput.value,
+                    question_packs_ids: selectedQuestionPacks,
+                    answer_packs_ids: selectedAnswerPacks
+                 })
+            });
+            const roomId = await res.json();
+
+            console.log(roomId);
+        }
+
+        getQuestionPacks();
+        getAnswerPacks();
+    </script>
+</body>
+
+</html>

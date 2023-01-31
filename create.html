@@ -150,8 +150,33 @@
                  })
             });
             const roomId = await res.json();
+            
+            const formData = new FormData();
+            formData.append("username", localStorage.getItem("username"));
+            formData.append("password", roomId);
 
-            console.log(roomId);
+            const tokenRes = await fetch("https://7ixjrz.deta.dev/auth", {
+                method: 'POST',
+                header: {
+                    'Accept': 'application/json',
+                    // 'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData
+            });
+            const token = await tokenRes.json();
+            const accessToken = token["access_token"];
+
+            localStorage.setItem('access_token', accessToken);
+
+            const joinRes = await fetch("https://7ixjrz.deta.dev/game/join", {
+                method: 'POST', 
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            window.location.href = "waiting.html"
         }
 
         getQuestionPacks();

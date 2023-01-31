@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waiting for game</title>
+</head>
+
+<body>
+    Waiting...
+    <div id="players">
+
+    </div>
+    <script>
+        const playersDiv = document.querySelector("div#players");
+        const accessToken = localStorage.getItem("access_token");
+
+        const currentPlayers = [];
+
+        async function monitorPlayers(numPlayers = 0) {
+            const res = await fetch("https://7ixjrz.deta.dev/game/monitor_players", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    "number_of_players": 0
+                })
+            });
+            const players = await res.json();
+
+            for (const player of players) {
+                if (!currentPlayers.includes(player)) {
+                    currentPlayers.push(player);
+                    const p = document.createElement("div");
+                    p.textContent = player;
+                    p.dataset.username = player;
+                    playersDiv.append(p);
+                }
+            }
+            await monitorPlayers(players.length);
+        }
+
+        monitorPlayers();
+    </script>
+</body>
+
+</html>

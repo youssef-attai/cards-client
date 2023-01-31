@@ -32,10 +32,25 @@
         const joinGameButton = document.querySelector("button#join-game");
 
         const usernameField = document.querySelector("input#Username");
+        const roomIdField = document.querySelector("input#RoomCode");
 
         createGameButton.onclick = function (e) {
             localStorage.setItem("username", usernameField.value);
-            window.location.href = "game/create.html"
+            window.location.href = "create.html"
+        }
+
+        const accessToken = 
+
+        joinGameButton.onclick = async function (e) {
+            const joinRes = await fetch("https://7ixjrz.deta.dev/game/join", {
+                method: 'POST', 
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            window.location.href = "waiting.html"
         }
     </script>
 </body>

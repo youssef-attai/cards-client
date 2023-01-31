@@ -1,0 +1,57 @@
+body,html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    border-radius: 30px;
+    width: 600px;
+    max-height: 500px;
+    background-color: aqua;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fade 1s linear;  
+}
+.page h2 {
+    margin: 50px 0px; 
+}
+.points {
+    height: 50%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    position: relative;
+    background-color: #eee;
+    overflow: scroll;
+    
+}
+@keyframes fade  {
+    from {
+        position: absolute;
+        left : 0;
+
+    }
+    to {
+        position: absolute;
+        left : 50%;
+        transform: translateX(-50%);
+
+    }
+}
+
+.point {
+    padding: 7px;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    padding: 10px;
+   font-size: 20px;
+   background-color: rgb(195, 195, 195);
+}
